@@ -1,52 +1,52 @@
 name: Deploy to ECR
 
-on:
+on: 
   push:
-    branches:
-      - dev
+    branches: [ dev ]
 
 jobs:
+
   build:
+
+    name: Build Image
     runs-on: ubuntu-latest
+
+
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16' 
 
-      - name: Check out code
-        uses: actions/checkout@v2
+    - name: Check out code
+      uses: actions/checkout@v2
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registry: 584918656742.dkr.ecr.us-east-1.amazonaws.com/ass1_repository
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+        AWS_REGION: us-east-1
 
-      - name: Build, test, tag, and push image to Amazon ECR database
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: webapp
-        run: |
-          # cd Chapter02/kubia/
-          # ls -ltra
-          # Docker build image database
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:lsfathimadb -f Dockerfile_mysql .
-          # Docker push image
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:lsfathimadb
-
-      - name: Build, test, tag, and push image for Amazon ECR app
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ass1_repository
-        run: |
-          # cd Chapter02/kubia/
-          # ls -ltra
-          # Docker build app
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:webapp -f Dockerfile .
-          # Docker push
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:webapp
+    - name: Build, test, tag, and push image to Amazon ECR database
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ass1_repository
+        IMAGE_TAG: v1.1
+      run: |
+        #cd Chapter02/kubia/
+        #ls -ltra
+        # Docker build image database
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile_mysql .
+        # Docker push image
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Build, test, tag, and push image for Amazon ECR app
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ass1_repository
+        IMAGE_TAG: v1.1
+      run: |
+        #cd Chapter02/kubia/
+        #ls -ltra
+        # Docker build app
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile .
+        # Docker push
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
