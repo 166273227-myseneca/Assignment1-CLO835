@@ -46,9 +46,9 @@ jobs:
         # cd Chapter02/kubia/
         # ls -ltra
         # Docker build image database
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$webapp -f Dockerfile_mysql .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:lsfathimadb -f Dockerfile_mysql .
         # Docker push image
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$webapp
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:lsfathimadb
 
     - name: Build, test, tag, and push image for Amazon ECR app
       env:
@@ -58,6 +58,6 @@ jobs:
         # cd Chapter02/kubia/
         # ls -ltra
         # Docker build app
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$webapp -f Dockerfile .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:webapp -f Dockerfile .
         # Docker push
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$webapp
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:webapp
