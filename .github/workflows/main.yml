@@ -2,7 +2,8 @@ name: Deploy to ECR
 
 on:
   push:
-    branches: [ dev ]
+    branches:
+      - dev
 
 jobs:
   build:
@@ -12,7 +13,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-          
+
       - name: Check out code
         uses: actions/checkout@v2
 
@@ -20,18 +21,19 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
+          registry: 584918656742.dkr.ecr.us-east-1.amazonaws.com/ass1_repository
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: us-east-1
+          aws-region: us-east-1 
 
       - name: Build, test, tag, and push image to Amazon ECR database
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: webapp
         run: |
-          #cd Chapter02/kubia/
-          #ls -ltra
+          # cd Chapter02/kubia/
+          # ls -ltra
           # Docker build image database
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:lsfathimadb -f Dockerfile_mysql .
           # Docker push image
@@ -42,8 +44,8 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ass1_repository
         run: |
-          #cd Chapter02/kubia/
-          #ls -ltra
+          # cd Chapter02/kubia/
+          # ls -ltra
           # Docker build app
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:webapp -f Dockerfile .
           # Docker push
