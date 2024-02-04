@@ -5,11 +5,13 @@ on:
     branches: [ dev ]
 
 jobs:
-
   build:
-
-    name: Build Image
     runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
 
     steps:
