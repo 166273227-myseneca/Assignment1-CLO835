@@ -21,6 +21,9 @@ jobs:
       with:
         node-version: '14'
 
+    - name: Create AWS credentials directory
+      run: mkdir -p ~/.aws
+
     - name: Configure AWS credentials
       run: |
         echo "[default]" > ~/.aws/credentials
@@ -58,4 +61,3 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile .
         # Docker push
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
