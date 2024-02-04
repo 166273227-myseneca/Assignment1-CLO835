@@ -29,7 +29,7 @@ jobs:
     - name: Build, test, tag, and push image to Amazon ECR database
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ass1_repository
+        ECR_REPOSITORY: webapp
       run: |
         #cd Chapter02/kubia/
         #ls -ltra
@@ -45,6 +45,6 @@ jobs:
         #cd Chapter02/kubia/
         #ls -ltra
         # Docker build app
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:lswebapp -f Dockerfile .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:webapp -f Dockerfile .
         # Docker push
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:lswebapp
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:webapp
