@@ -41,7 +41,7 @@ jobs:
     - name: Build, test, tag, and push image for Amazon ECR app
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ass1_repository
+        ECR_REPOSITORY: ass2_repository
        # IMAGE_TAG: v1.1
       run: |
         cd clo835_fall2022_assignment2
